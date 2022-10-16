@@ -271,6 +271,7 @@ def log():
                 new_item = Item(category = category, content = encoded_content, entry_id = entry.id)
                 db.session.add(new_item)
                 db.session.commit()
+                flash("Logged new journal entry. ")
         else: 
             items_categories = []
             print(items)
@@ -296,6 +297,7 @@ def log():
                     new_item = Item(category = category, content = encoded_content, entry_id = entry.id)
                     db.session.add(new_item)
                     db.session.commit()
+            flash("Updated journal entry.")
 
 
         return redirect("/")
