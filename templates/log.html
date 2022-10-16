@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+
+{% block title %}Log{% endblock %}
+
+{% block main %}  
+<h2>{% if not hasLogged %}Log {% else %}Update log {% endif %}entry for {{ date }} 
+    <a id="info-popover" tabindex="0" class="btn btn-lg btn-primary" role="button" data-toggle="popover" data-trigger="focus" title="Why should I log?" data-placement="top" data-content="Writing about your day, or journaling, can have many benefits to mental health. For example, journaling allows you to better understand your emotions, provides an opportunity to hear yourself, and allows you to remember your days when it seems like they fly by all too quickly.">&#8505;</a> 
+</h2> 
+
+
+<h5 style = "text-align: left; margin-top: 50px;">Your selected items: </h5>
+<form action = "/log" method = "post">
+{% for category in preferred_items %}
+    <div id="pref-items">
+        <p><strong>Name:</strong> {{ all_items[category].name }}</p>
+        <p><strong>Description:</strong> {{ all_items[category].description }}</p>
+        <div class = "form-group">
+            {{ all_items[category].html|safe }}
+                {% if hasLogged %}
+                    {% for item in logged_items %}
+                        {% if item.content %}
+                        <script>
+                            var occuranceList = document.querySelectorAll('#{{ all_items[item.category].name|lower }}id');
+                            var uses_innerHTML = '{{ all_items[item.category].html }}'.includes('textarea');
+                            var content = '{{ item.content|b64decode }}';
+                            var content_list = content.split("---");
+                            // Iterates through the item occurances, replacing their values with the content
+                            for (var i = 0; i < occuranceList.length; i++)
+                            {
+                                if (uses_innerHTML)
+                                {
+                                    occuranceList[i].innerHTML = content_list[i]; 
+                                }  
+                                else
+                                {
+                                    occuranceList[i].value = content_list[i];   
+                                }
+                            }
+                        </script>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+        </div>
+    </div>
+{% endfor %}
+
+<div class = "btn-box">
+    <button class="btn btn-secondary" type="submit">
+        {% if not hasLogged %}
+        Log
+        {% else %}
+        Update Entry
+        {% endif %}
+    </button>
+</div>
+</form>
+
+{% endblock %}

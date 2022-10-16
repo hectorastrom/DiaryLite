@@ -1,0 +1,159 @@
+{% extends "layout.html" %}
+
+{% block title %}Results{% endblock %}
+
+{% block main %}
+<h1>Log entry for {{ date }}</h1>
+<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#todaymodal">
+    View log entry for {{ date }}
+</button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="todaymodal" tabindex="-1" role="dialog" aria-labelledby="todaymodallabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="todaymodellabel">Entry for {{ date }}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {% for item in items %}
+            {% if item.content %}
+                <div class = "padded">
+                    <p class = "memory-title">{{ all_items[item.category].name }}</p>
+                    {{ all_items[item.category].disabled_html|safe }}
+                </div>
+                    <script>
+                        // Gets all textareas on the document
+                        var occuranceList = document.querySelectorAll('#{{ all_items[item.category].name|lower }}id');
+                        // So that we know whether to set the innerHTML to be the content or the value, we use check for if it contains textarea in its html in which case we would know to use .innerHTML, otherwise it's just value
+                        var uses_innerHTML = '{{ all_items[item.category].html }}'.includes('textarea');
+                        var content = '{{ item.content|b64decode }}';
+                        var content_list = content.split("---");
+                        // Iterates through the text areas, replacing their values with the content
+                        for (var i = 0; i < occuranceList.length; i++)
+                        {
+                            if (uses_innerHTML)
+                            {
+                                occuranceList[i].innerHTML = content_list[i]; 
+                            }  
+                            else
+                            {
+                                occuranceList[i].value = content_list[i];   
+                            }
+                        }
+                    </script>
+           {% endif %}
+        {% endfor %}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  {% if yItems %}
+  <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#yesterdaymodal">
+    View log entry for the day before {{ date }}
+  </button>
+  <div class="modal fade" id="yesterdaymodal" tabindex="-1" role="dialog" aria-labelledby="yesterdaymodallabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="yesterdaymodallabel">Entry for the day before {{ date }}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {% for item in yItems %}
+            {% if item.content %}
+                <div class = "padded">
+                    <p class = "memory-title">{{ all_items[item.category].name }}</p>
+                    {{ all_items[item.category].disabled_html|safe }}
+                </div>
+                    <script>
+                        // Gets all textareas on the document
+                        var occuranceList = document.querySelectorAll('#{{ all_items[item.category].name|lower }}id');
+                        // So that we know whether to set the innerHTML to be the content or the value, we use check for if it contains textarea in its html in which case we would know to use .innerHTML, otherwise it's just value
+                        var uses_innerHTML = '{{ all_items[item.category].html }}'.includes('textarea');
+                        var content = '{{ item.content|b64decode }}';
+                        var content_list = content.split("---");
+                        // Iterates through the text areas, replacing their values with the content
+                        for (var i = 0; i < occuranceList.length; i++)
+                        {
+                            if (uses_innerHTML)
+                            {
+                                occuranceList[i].innerHTML = content_list[i]; 
+                            }  
+                            else
+                            {
+                                occuranceList[i].value = content_list[i];   
+                            }
+                        }
+                    </script>
+           {% endif %}
+        {% endfor %}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  <br>
+  {% if nItems %}
+  <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#nextmodal">
+    View log entry for the day after {{ date }}
+  </button>
+  <div class="modal fade" id="nextmodal" tabindex="-1" role="dialog" aria-labelledby="nextmodallabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="nextmodallabel">Entry for the day after {{ date }}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {% for item in nItems %}
+            {% if item.content %}
+                <div class = "padded">
+                    <p class = "memory-title">{{ all_items[item.category].name }}</p>
+                    {{ all_items[item.category].disabled_html|safe }}
+                </div>
+                    <script>
+                        // Gets all textareas on the document
+                        var occuranceList = document.querySelectorAll('#{{ all_items[item.category].name|lower }}id');
+                        // So that we know whether to set the innerHTML to be the content or the value, we use check for if it contains textarea in its html in which case we would know to use .innerHTML, otherwise it's just value
+                        var uses_innerHTML = '{{ all_items[item.category].html }}'.includes('textarea');
+                        var content = '{{ item.content|b64decode }}';
+                        var content_list = content.split("---");
+                        // Iterates through the text areas, replacing their values with the content
+                        for (var i = 0; i < occuranceList.length; i++)
+                        {
+                            if (uses_innerHTML)
+                            {
+                                occuranceList[i].innerHTML = content_list[i]; 
+                            }  
+                            else
+                            {
+                                occuranceList[i].value = content_list[i];   
+                            }
+                        }
+                    </script>
+           {% endif %}
+        {% endfor %}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+{% endblock %}

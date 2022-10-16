@@ -1,0 +1,282 @@
+nav .navbar-brand
+{
+    /* size for brand */
+    font-size: 4.7vh;
+    width: 12%;
+}
+
+img.bg {
+    z-index: -1;
+    min-height: 100%;
+    min-width: 1024px;
+      
+    width: 100%;
+    height: auto;
+      
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+ 
+
+
+/* Colors for brand */
+nav .navbar-brand .grey
+{
+    color: #D3D3D3;
+}
+nav .navbar-brand .light
+{
+    color: #F5F5F5;
+}
+
+.popover-header
+{
+    background: #01002b;
+}
+
+
+main .form-control
+{
+    /* Center form controls */
+    display: inline-block;
+
+    /* Override Bootstrap's 100% width for form controls */
+    width: auto;
+}
+
+main
+{
+    /* Scroll horizontally as needed */
+    overflow-x: auto;
+
+    /* Center contents */
+    text-align: center;
+}
+
+html 
+{
+    height: 100%;
+}
+
+body
+{
+    height: 100%;
+    margin: 0;
+    color: #b3b3b3;
+}
+
+
+.btn
+{
+    font-size: 2.7vh;
+}
+
+.nav-item
+{
+    font-size: 2.8vh;
+    margin-bottom: 3%;
+}
+
+
+.form-check-input
+{
+    margin-left: -23%;
+    margin-top: 1.4%;
+}
+
+
+.bold
+{
+    font-weight: bold;
+}
+
+footer
+{
+    padding-top: 9%;
+}
+
+footer.extratop
+{
+    padding-top: 20%;
+}
+
+
+.logo
+{
+    padding-right: .6%;
+    margin-left: -.28%;
+    margin-bottom: 3%;
+    max-width: 25%;
+    height: auto; 
+}
+
+.logincontainer
+{
+    width: 35%;
+    height: 400px;
+    margin: 8% auto;
+    background: rgba(68, 70, 71, .8);
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+    margin-top: -1%;
+}
+
+form input
+{
+    width: 100%;
+    padding: 10px 5px;
+    margin: 5px 0;
+    border: 0;
+    border-bottom: 1px solid black;
+    outline: none;
+}
+
+.padded
+{
+    padding:3px;
+}
+
+.memory-title
+{
+    font-weight: bold;
+    color:black;
+}
+
+h3
+{
+    padding: 20px;
+    color: white;
+    text-decoration: underline;
+}
+
+.login-button
+{
+    margin-top: 30px;
+}
+
+.register-button
+{
+    margin-bottom: -20%;
+    align-items: center;
+
+}
+
+
+#Form2
+{
+    display: none;
+}
+
+#info-popover
+{
+    font-family: -apple-system;
+    padding: 0px;
+    margin-right: -20px;
+    margin-top: -5px;
+    display:inline-block;
+}
+
+#main-explanation
+{
+    margin-top: 40px;
+    text-align: left;
+    font-size: large;
+    color: white;
+}
+
+#pref-items
+{
+    font-size: large;
+    text-align: left;
+    padding: 30px;
+    padding-bottom: 0px;
+    color: white;
+}
+
+
+
+.big-checkbox 
+{
+    width: 30px; 
+    height: 30px;  
+    margin-top: -1%;
+    margin-left: -1.7%;
+}
+
+.low
+{
+    margin-top: 100px;
+}
+
+/* https://www.w3schools.com/howto/howto_js_rangeslider.asp */
+.slidecontainer 
+{
+    width: 100%; /* Width of the outside container */
+}  
+
+.slider 
+{
+    -webkit-appearance: none;
+    width: 100%;
+    height: 15px;
+    border-radius: 15px;  
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+
+.slider:hover 
+{
+    opacity: 1; /* Fully shown on mouse-over */
+}
+  
+  
+.slider::-webkit-slider-thumb 
+{
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%; 
+    background: #13cde6;
+    cursor: pointer;
+}
+  
+.slider::-moz-range-thumb 
+{
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #13cde6;
+    cursor: pointer;
+}
+
+.modal-title
+{
+    color:black;
+}
+
+textarea
+{
+    background-color: black;
+}
+
+@media screen and (max-width: 1024px) 
+{
+    img.bg 
+    {
+        left: 50%;
+        margin-left: -512px; 
+    }
+
+    .logincontainer
+    {
+        width: 85%;
+        position: relative;
+    }
+
+}

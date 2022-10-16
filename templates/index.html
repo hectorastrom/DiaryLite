@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block title %}Main{% endblock %}
+
+{% block main %}
+    <h1>Welcome {% if not firsttime %}back {% endif %}to DiaryLite, {{ firstname }}.</h1>
+
+    {% if deleteOption %}
+    <form action = "/" method = "post">
+        <div class = "btn-box">
+            <button class="btn btn-danger" type="submit">Delete Entries from User</button>
+        </div>
+    </form>
+    {% endif %}
+    {% if firsttime %}
+    <div id = "main-explanation">
+        <p><strong>DiaryLite</strong> your tool for organization and recollection.</p>
+        <p>To use DiaryLite, head to the <a href="/log">Log</a> tab to begin writing about your day.</p>
+        <p>To customize what you would like to log each day, head to the <a href="/prefs">Preferences</a> tab.</p>
+        <p>If you'd like to look back at the days you've logged, head to the <a href="/memories">Memories</a> tab.</p>
+    </div>
+    {% else %}
+    <div id="main-explanation">
+        {% if hasLogged %}
+            <p>You've already logged today. Come back tomorrow night to log again! You can also edit the log in the <a href="/log">Log</a> tab.</p>
+            <p>Customize what you'll see tomorrow in the <a href="/prefs">Preferences</a> tab.</p>
+            <p>Or, look back at all the days you've logged in the <a href="/memories">Memories</a> tab.</p>
+        {% else %}
+            <p>Time for your daily log! Remember, you can log your day in the <a href="/log">Log</a> tab.</p>
+            <p>Or, customize your log layout in the <a href="/prefs">Preferences</a> tab.</p>
+            <p>You can also look back at all the days you've logged in the <a href="/memories">Memories</a> tab.</p>
+        {% endif %}
+    </div>
+    {% endif %}
+<footer class = "low"><strong>Privacy:</strong> DiaryLite uses base64 encoding and id association for user input making<br> it too cryptic for anyone not explicitly <strong>trying</strong> to read user input to be able to.</footer>
+{% endblock %}

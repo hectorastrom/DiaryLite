@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block title %}Memories{% endblock %}
+
+{% block main %}
+<form action = "/results" method = "post">
+    <div class = "form-group">
+        <label for="searchbar">Search Day: </label>
+        <input autofocus class="form-control" name="searchbar" placeholder="MM DD YYYY" type="text" required autocomplete="off">
+    </div>
+    <div class = "btn-box">
+        <button class="btn btn-secondary" type="submit">Search</button>
+    </div>
+</form>
+{% endblock %}

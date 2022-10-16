@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+    <div class="logincontainer">
+        <h3>Register</h3>
+        <form action = "/register" method = "post">
+            <div id = "Form1">
+                <div class = "form-group">
+                    <input autofocus class="form-control" name="firstname" placeholder="First Name" type="text" required autocomplete="off" value="{{ firstname }}">
+                    <input class="form-control" name="lastname" placeholder="Last Name" type="text" required autocomplete="off" value="{{ lastname }}">
+                </div>
+                <div class = "form-group">
+                    <input class="form-control" name="email" placeholder="Email" type="email" autocomplete="off" required value="{{ email }}">
+                </div>
+                <div class="btn-box">
+                    <button class="btn btn-success register-button" type="button" id = "Next1">Next</button>
+                </div>
+                <footer class = "extratop">
+                    Already have an account? Login <a href = "/login">here!</a>
+                </footer>
+            </div>
+            <div id = "Form2">
+                <div class = "form-group">
+                    <input autofocus class="form-control" name="password" placeholder="Password" type="password" required autocomplete="off" value="{{ password }}">
+                    <a id="info-popover" tabindex="0" class="btn btn-lg btn-primary" role="button" data-toggle="popover" data-trigger="focus" title="Password Requirements" data-placement="top" data-content="Passwords must be 8 characters long, contain both uppercase and lowercase characters, and contain a number.">&#8505;</a>
+                </div>
+                <div class = "form-group">
+                    <input class="form-control" name="confirmation" placeholder="Confirm Password" type="password" required autocomplete="off" value="{{ password }}">
+
+                </div>
+                <div class="btn-box">
+                    <button class="btn btn-danger register-button" type="button" id = "Back1">Back</button>
+                    <button class="btn btn-secondary register-button" type="submit">Register</button>
+                </div>
+            </div>
+        </form>
+    </div>
+<script>
+    var Form1 = document.getElementById("Form1");
+    var Form2 = document.getElementById("Form2");
+
+    var Next1 = document.getElementById("Next1");
+    var Back1 = document.getElementById("Back1");
+
+    Next1.onclick = function(){
+        Form1.style.display = "none";
+        Form2.style.display = "inline";
+    }
+    Back1.onclick = function(){
+        Form1.style.display = "inline";
+        Form2.style.display = "none";
+    }
+</script>
+{% endblock %}
