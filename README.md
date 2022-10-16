@@ -1,48 +1,34 @@
-# Documentation for DiaryLite:
+# Design behind DiaryLite
 
-### Link to [DiaryLite Walkthrough](https://youtu.be/lsJwG6u0Hec)
+DiaryLite is an online journaling tool built on convenience and customizability. I created DiaryLite as a way for me to remember my days since it seems as though I can't even remember what I had for lunch yesterday. To begin I'd like to give a general explanation of the project.
 
+## Overview
+DiaryLite is built with Flask and SQLAlchemy for the databases. It stores the users, their entries, the items in each entry, and the user's preferences in the database. Each part of my app is built so that items more features can be easily implemented on the building blocks lain with for loops and systematic naming (more on that later). Items are stored in classes which are imported and added to a dictionary where the number of the category corresponds to an instance of that class. This allows me to reference the category of the item class and see the information, including html, inside without storing that all in a database. I've tried to give the user complete freedom in what they want to log and when they want to do it. Additionally, I have base64 encoded strings so that the user_input is somewhat protected
 
-DiaryLite is built upon Flask and SQLAlchemy in VSCode. To set up DiaryLite to run for yourself:
-### Prereqs:
-* Download VSCode and install the python extension. 
-* Install python version 3.9.1 from [python.org](http://python.org). 
-* Restart VSCode to prompt it recognizing the new python version. On windows, make sure the python interpreter is located in your path which you can check by running `path` in your command prompt. 
-### In VSCode
-* Once in VSCode, open settings in the bottom left and enable text wrapping to view my code easier
-* Create a new workspace by going to the top and choosing File > Open Workspace, and then create a new folder.
-* Unzip the project folder name DiaryLite.zip
-* Drag the DiaryLite folder into the new workspace
-* cd into your workspace and DiaryLite
-* On macOS execute `python3 -m venv env` and on Windows execute `py -3 -m venv env`
-* Open the Command-Palette through View > Command Palette and type `Python: Select Interpreter` and then select the virtual environment that begins with ./env
-* If you do not see one of those environments *(as I do not but that's what VSCode documentation suggested)* then just select Python 3.9.1 
-* In the Command-Palette run `Terminal: Create New Integrated Terminal`
-* Execute `source env/bin/activate` on macOS or `env\Scripts\Activate.ps1` on Windows while in your DiaryLite file to activate your environment
-* You will know if you're in a virtual environment when the command prompt shows (env) at the beginning
-* In the Command-Palette, type `Python: Select Linter` and select pylint, installing it if not already installed from VSCode
-* In the .vscode file that has been created in the workspace make sure settings.json contains these lines: 
-`
-{
-    "python.linting.enabled": true,
-    "python.linting.pylintEnabled": true,
-}
-`
-* Upgrade pip by executing `python -m pip install --upgrade pip` in your virtal environment 
-* Preliminary installation of flask: execute `python -m pip install flask`
-* Execute `pip install -r requirements.txt` in your virtual environment, installing all the needed libraries for DiaryLite
-### In DiaryLite
-* Now, **assuming you're in the DiaryLite with (env) in the command prompt**, you should be able to execute `flask run` to run DiaryLite. 
-* Head to the link shown in the command prompt after executing `flask run` or type localhost:5000 in your browser
-* Use the website as you please, once you look at the code you may notice (at least on my end) that there are more than 50 red errors that pylint has identified 
-    * These errors are likely saying that the Instance of 'SQLAlchemy' has no _ member
-    * I learned that, no matter how irritating, these errors were purely superficial and did not interfere with the execution of the program
+### Now to explain the design I will walk you through each route in app.py and explain the code behind it.
 
-#### Other than that, feel free to explore my code and website and I hope you find my code and project at least a fraction as interesting and fun as it was for me to make it!
+## "/", index
+Outside of an administrator delete button which I used when testing, the index page just sees if the user has logged today by comparing dates of last log and todays date. It also checks if this is the user's first day. All this is checked so that index.html has different output to tell the user what they can do. The logic to get the daily log and todays date is logic in functions that I use in other parts of my code
 
-##### Documentation instructed by [VSCode's Flask Guide](https://code.visualstudio.com/docs/python/tutorial-flask#_create-a-requirementstxt-file-for-the-environment)
+## "/login", login
+The login page gets the user's email and password. The email it compares to users in the database to see if there's an account registered with that email, and the password it checks the hash of like in CS50 finance to the password of the account registered with that email. Once everything gets the green light the user_id is stored in the session so that they're remembered even if the browser tab is closed.
 
+## "/logout", logout
+Nothing special, just clears the session.
 
+## "/register", register
+Similar to /login, the register page has checks for each of the items. If any item is not correct (ex: password doesn't follow specified format or email is already taken) then there is an error message flashed. When I was designing this I was wondering how I could flash on the register page and not on the next page. I then realized I could just redirect them back to the register page to force the flash on that page. To add on, I also store the values of all the correct fields in variables I provide in render_temlate so that when an error is displayed the correct fields are preserved. If I don't input lastname for example in render_template, then jinja will just assume it's none and therefore in register.html when I set the value of the lastname field to {{ lastname }} it will just set it to none thereby not affected it. One final piece is that I create a user by initalizing it as a class (which is how SQLAlchemy works instead of executing raw SQL) and then set the default preferences to be my 1 and 2 items. 
 
+## "/log", log
+In the log page I need to check if they have logged or haven't today so I know whether they're editing and I should update the inputs or they're writing where I should create the inputs. I do this with the same mechanism I mentioned in / by comparing dates. I also send a readable date formatted with strftime to the template so they can see Saturday, August 8th, 2021 for example. Each item has a class which I store in items.py. These classes contain the category of the item, the name of the item, the description of the item, and the active and disabled html of the item. When showing items in both the log and pref page I am getting the value of the item from all_items() and accessing the .name, .description, or .html values. In log, I do this by iterating through the category's in the user's preffered_items (set in /prefs) and then getting the values of those items from all_items[category]. This eliminates the need for me to store the html or name or description in the item database saving a lot of time and space. To edit a log, I first get all the items logged then in the log.html I have JavaScript that sets the innerHTML of textareas and the values of input fields to whatever the content was stored in the logged items. This same logic is used in /results to display the values of the inputs. I haven't created an item like this yet, but if I were to have an item with multiple inputs or text boxes, then I would just add "---" between the contents of each and then in the JavaScript since it's splitting on that string it would still fill them correctly. The way I am able to get the input from the boxes in my app.py is by standardizing the naming convention for my items. The name value of the items' inputs is always name.lower+box. So Summary becomes "summarybox". A similar thing is done with the id. 
 
+## "/prefs", prefs
+In order to display the disabled html of each item I loop through all the items in all_items in prefs.html and then in jinja I get the value of the disabledhtml from all_items and then cast it to safe so that instead of it displaying a string it displays the html. For example: {{ item.disabled_html|safe }}. Prefs is the only non-elegant (in my opinion of course) part of my code. I am forced to, for each item, write a manual if statement to add the item to preffered items which is not the most beautiful solution and as I continue adding items I will certainly make it as clean as my other parts. But as of now I get the values of each checkbox for each item and then if it's checked I add it to preffered_items. Then preffered_items is stored in the prefs for the user. Preffered items is updated each time prefs is got. 
 
+## "/memories", memories
+Memories simply renders the memories.html template which posts the data from the search field to /results which is where all the interesting logic occurs. This is just done to seperate the results from the search bar. 
+
+## "/results", results
+Results gets the value that was posted to it from memories and if its "today" or "yesterday" it will create a custom date for that. Otherwise, it will read the date in all sorts of formats and convert it to a universal format, throwing errors if I can't work with the date the user has inputted. This universal format is encapsulated by % so that I can check if the date of the entry is LIKE that date. I do this because in my database I actually store the datetime which has more than just the date and since nobody is going to search for an exact date and hour and second I have to see if its like it. I also have some logic to get the day before's and the next day's items. All this is sent to memory_results.html. In there, I have modals which store all the content from the entries. I did this because I didn't want to crowd the results page. Instead, I wanted the user to control when the wanted to see something. This has the logic I mentioned in the log page where the value of the html is set with the value of the items. The yesterday and next day modals are only displayed if they exist (since people might not log everyday).
+
+### That's most of the design choices I remember making. I hope you found it interesting to read my thought process and I know I learned a lot from this experience.
